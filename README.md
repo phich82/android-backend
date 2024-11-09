@@ -1,16 +1,16 @@
 # Autoloading với Composer
 
 ## 1. Project folder structure
-.
-├── composer.json
-├── index.php
-└── src
-    ├── Controllers
-    │   └── HomeController.php
-    ├── Models
-    │   └── User.php
-    └── Views
-        └── home.php
+    .
+    ├── composer.json
+    ├── index.php
+    └── src
+       ├── Controllers
+       │   └── HomeController.php
+       ├── Models
+       │   └── User.php
+       └── Views
+           └── home.php
 
 ## 2. The composer.json file
 {
