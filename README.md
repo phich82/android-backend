@@ -13,13 +13,13 @@
            └── home.php
 
 ## 2. The composer.json file
-{
-    "autoload": {
-        "psr-4": {
-            "App\\": "src/"
+    {
+        "autoload": {
+            "psr-4": {
+                "App\\": "src/"
+            }
         }
     }
-}
 
 ## 3. Run command
     composer dump-autoload
