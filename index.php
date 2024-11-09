@@ -11,7 +11,7 @@ use App\Student;
 
 $db = new DB();
 
-$sql = 'SELECT * FROM student WHERE id=1';
+$sql = 'SELECT * FROM student';
 $data = $db->select($sql);
 
 // foreach ($data as $row) {
