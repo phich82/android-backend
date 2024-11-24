@@ -1,11 +1,11 @@
 <?php
 namespace App;
 
-use App\Utils\Util;
-use Exception;
 use PDO;
+use Exception;
 use PDOException;
 use PDOStatement;
+use App\Utils\Util;
 
 class DB {
 
@@ -17,6 +17,25 @@ class DB {
 
     public function __construct() {
         $this->connect();
+    }
+
+    public function instnace(): PDO {
+        if (empty($this->conn)) {
+            $this->connect();
+        }
+        return $this->conn;
+    }
+
+    public function begin_trabsaction(): void {
+        $this->conn->beginTransaction();
+    }
+
+    public function commit(): void {
+        $this->conn->commit();
+    }
+
+    public function rollback(): void {
+        $this->conn->rollback();
     }
 
     public function connect(): void {
@@ -85,14 +104,20 @@ class DB {
             // If $bindings is an assoc array, it is named placeholders.
             if (Util::is_assoc_array($bindings)) {
                 $stmt->execute($bindings);
-                return $stmt;
+                if (str_starts_with(strtoupper($sql), 'INSERT')) {
+                    return (int) $this->conn->lastInsertId();
+                }
+                return $stmt->rowCount();
             }
             // Otherwise, it is unnamed placeholders
             foreach($bindings as $key => $value) {
                 $stmt->bindParam($key + 1, $value);
             }
             $stmt->execute();
-            return $stmt;
+            if (str_starts_with(strtoupper($sql), 'INSERT')) {
+                return (int) $this->conn->lastInsertId();
+            }
+            return $stmt->rowCount();
         } catch (PDOException $e) {
             throw new Exception($e->getMessage(), (int) $e->getCode());
         }

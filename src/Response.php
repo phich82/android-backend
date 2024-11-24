@@ -15,12 +15,12 @@ class Response
     }
 
     private static function json(bool $success, string $code = "", string $message = "", mixed $data = null): string {
-        ob_start();
+        //ob_start();
         
         // Clear json_last_error()
         json_encode(null);
 
-        http_response_code($code);
+        
         $json = json_encode([
             "success" => $success,
             "message" => $message,
@@ -29,16 +29,13 @@ class Response
         ], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
 
         if (JSON_ERROR_NONE !== json_last_error()) {
-            throw new InvalidArgumentException(sprintf(
-                'Unable to encode data to JSON in %s: %s',
-                __CLASS__,
-                json_last_error_msg()
-            ));
+            throw new InvalidArgumentException(sprintf('Unable to encode data to JSON in %s: %s', __CLASS__, json_last_error_msg()));
         }
 
         echo $json;
+        http_response_code((int) $code);
         header("Content-Type: application/json");
-        ob_end_flush(); //now the headers are sent
+        //ob_end_flush(); //now the headers are sent
         exit;
     }
 }
